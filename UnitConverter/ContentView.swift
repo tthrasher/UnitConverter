@@ -5,8 +5,6 @@
 //
 //  Created by Terry Thrasher on 2021-04-05.
 //
-//  TO DO:
-//  1. There's a rounding error in the math, leading to such results as 100°F = 98°F
 
 import SwiftUI
 
@@ -35,29 +33,29 @@ struct ContentView: View {
         }
     }
     
-    var convertedToKelvin: Int {
-        let startingTemperature = Int(degreeAmount) ?? 0
+    var convertedToKelvin: Double {
+        let startingTemperature = Double(degreeAmount) ?? 0
         
         if selectedInput == 0 {
             return startingTemperature
         } else if selectedInput == 1 { // Celsius
-            return startingTemperature + 273
+            return startingTemperature + 273.15
         } else { // Fahrenheit
             let subtractedThirtyTwo = startingTemperature - 32
             let multipliedByFiveNinths = subtractedThirtyTwo * 5 / 9
-            let addedTwoSeventyThree = multipliedByFiveNinths + 273
+            let addedTwoSeventyThree = multipliedByFiveNinths + 273.15
             
             return addedTwoSeventyThree
         }
     }
     
-    var resultTemperature: Int {
+    var resultTemperature: Double {
         if selectedOutput == 0 { // Kelvin
             return convertedToKelvin
         } else if selectedOutput == 1 { // Celsius
-            return convertedToKelvin - 273
+            return convertedToKelvin - 273.15
         } else { // Fahrenheit
-            let subtractedTwoSeventyThree = convertedToKelvin - 273
+            let subtractedTwoSeventyThree = convertedToKelvin - 273.15
             let multipliedByNineFifths = subtractedTwoSeventyThree * 9 / 5
             let addedThirtyTwo = multipliedByNineFifths + 32
             
@@ -89,7 +87,7 @@ struct ContentView: View {
                 Section(header: Text("Temperatures")) {
                     TextField("Starting temperature", text: $degreeAmount)
                         .keyboardType(.numberPad)
-                    Text("Result: \(resultTemperature)\(firstLetterOfOutput)")
+                    Text("Result: \(resultTemperature, specifier: "%.2f")\(firstLetterOfOutput)")
                 }
             }
         }
